@@ -5,8 +5,8 @@
 #  Copyright (C) 2013 admin@magentomod.com                           #
 #  All rights reserved.                                              #
 #====================================================================#
-SELF=$(basename $0)
-ADOVMS_VER="2.0"
+
+ADOVMS_VER="2.0a"
 
 # quick-n-dirty - color, indent, echo, pause, proggress bar settings
 function cecho() {
@@ -287,7 +287,7 @@ if [ "$mail_install" == "y" ];then
           rpm  --quiet -q postfix dovecot dovecot-mysql dovecot-pigeonhole procmail git subversion
              if [ $? = 0 ]
                 then
-					echo
+		echo
                 cok "INSTALLED"
 		     else
              cwarn "ERROR"
