@@ -451,7 +451,7 @@ additional_config_dir = /etc/postfix/config
 
 smtpd_tls_cert_file = $VMB_SSL_CRT
 smtpd_tls_key_file = $VMB_SSL_KEY
-ssmtpd_tls_auth_only = yes
+smtpd_tls_auth_only = yes
 smtpd_use_tls = yes
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_type = dovecot
