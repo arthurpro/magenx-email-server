@@ -757,7 +757,8 @@ cecho "Creating ViMbAdmin database tables:"
 ./bin/doctrine-cli.php create-tables
 echo
 cecho "Now edit $VMB_PATH/application/configs/application.ini and configure all parameters in the [user] section"
-cecho "except securitysalt - easier to do that later"
+cecho "except securitysalt - easier to do that later when you first run web frontend"
+cecho "monitor mail log at tail -f /var/log/maillog"
 echo
 fi
 echo
