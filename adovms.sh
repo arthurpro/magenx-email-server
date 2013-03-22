@@ -165,7 +165,7 @@ printf "\033c"
         echo
         cecho "- For repositories installation enter   :  \033[01;34m repo"
         cecho "- For packages installation enter   :  \033[01;34m packages"
-		cecho "- Download and configure vimbadmin :  \033[01;34m vimbadmin"
+	cecho "- Download and configure vimbadmin :  \033[01;34m vimbadmin"
         cecho "- Download and configure everything   :  \033[01;34m config"
         echo
         cecho :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -372,7 +372,7 @@ printf "\033c"
 echo
 cecho "CREATING Virtual mail User and Group"
 groupadd -g 5000 vmail
-useradd -g vmail -u 5000 vmail -d /home/vmail -m
+useradd -g vmail -u 5000 vmail -d /home/vmail -m -s /sbin/nologin
 echo
 cecho "CREATING ViMbAdmin DATABASE AND DATABASE USER"
 echo
@@ -742,9 +742,9 @@ cat > /etc/postfix/config/white_client_ip <<END
 END
 echo
 echo
+VMB_PATH=$(cat ~/adovms/.adovms_index | grep mail | awk '{print $2}')
 cecho "Now we will try to edit ViMbAdmin application.ini file:"
 cecho "$VMB_PATH/application/configs/application.ini"
-VMB_PATH=$(cat ~/adovms/.adovms_index | grep mail | awk '{print $2}')
 cd $VMB_PATH
 cp $VMB_PATH/application/configs/application.ini.dist $VMB_PATH/application/configs/application.ini
 sed -i 's/defaults.domain.transport = "virtual"/defaults.domain.transport = "dovecot"/' $VMB_PATH/application/configs/application.ini
@@ -756,7 +756,7 @@ echo
 cecho "Creating ViMbAdmin database tables:"
 ./bin/doctrine-cli.php create-tables
 echo
-cecho "Now edit $VMB_PATHN/application/configs/application.ini and configure all parameters in the [user] section"
+cecho "Now edit $VMB_PATH/application/configs/application.ini and configure all parameters in the [user] section"
 cecho "except securitysalt - easier to do that later"
 echo
 fi
