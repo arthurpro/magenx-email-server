@@ -439,6 +439,12 @@ read -e -p "---> Enter your ssl key location: " -i "/etc/ssl/server.key"  VMB_SS
 VMB_MYHOSTNAME=$(echo $HOSTNAME)
 cat > /etc/postfix/main.cf <<END
 smtpd_banner = \$myhostname ESMTP Goofy
+
+queue_run_delay = 1h
+minimal_backoff_time = 1h
+maximal_queue_lifetime = 3h
+maximal_backoff_time = 3h
+
 biff = no
 append_dot_mydomain = no
 inet_interfaces = all
