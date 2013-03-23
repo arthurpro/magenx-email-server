@@ -440,6 +440,9 @@ VMB_MYHOSTNAME=$(echo $HOSTNAME)
 cat > /etc/postfix/main.cf <<END
 smtpd_banner = \$myhostname ESMTP Goofy
 
+#specify 0 when mail delivery should be tried only once.
+#maximal_queue_lifetime = 0
+
 queue_run_delay = 1h
 minimal_backoff_time = 1h
 maximal_queue_lifetime = 3h
