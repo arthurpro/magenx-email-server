@@ -494,11 +494,11 @@ smtpd_restriction_classes =
                             rbl_cbl_abuseat_org,
                             rbl_sbl_spamhaus_org,
                             rbl_dul_ru, 
-							rbl_spamcop,
+                            rbl_spamcop,
                             white_client_ip,
                             black_client_ip,
                             block_dsl,
-							helo_access,
+                            helo_access,
                             white_client,
                             black_client,
                             mx_access
