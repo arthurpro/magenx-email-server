@@ -282,9 +282,9 @@ if [ "$mail_install" == "y" ];then
 			echo -n "     PROCESSING  "
 		long_progress &
 		pid="$!"
-		yum -y -q install postfix dovecot dovecot-mysql dovecot-pigeonhole procmail git subversion >/dev/null 2>&1
+		yum -y -q install postfix dovecot dovecot-mysql dovecot-pigeonhole git subversion >/dev/null 2>&1
 		stop_progress "$pid"
-          rpm  --quiet -q postfix dovecot dovecot-mysql dovecot-pigeonhole procmail git subversion
+          rpm  --quiet -q postfix dovecot dovecot-mysql dovecot-pigeonhole git subversion
              if [ $? = 0 ]
                 then
 		echo
@@ -480,7 +480,6 @@ mydestination = localhost
 mynetworks = 127.0.0.0/8
 myorigin = \$myhostname
 
-mailbox_command = procmail -a "\$EXTENSION"
 mailbox_size_limit = 0
 
 virtual_mailbox_domains = mysql:/etc/postfix/mysql/virtual-mailbox-domains.cf
