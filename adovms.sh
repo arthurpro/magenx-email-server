@@ -452,7 +452,7 @@ additional_config_dir = /etc/postfix/config
 smtpd_tls_cert_file = $VMB_SSL_CRT
 smtpd_tls_key_file = $VMB_SSL_KEY
 smtpd_tls_auth_only = yes
-smtpd_use_tls = yes
+smtpd_tls_security_level = encrypt
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
@@ -462,7 +462,7 @@ smtpd_reject_unlisted_recipient = yes
 smtpd_tls_session_cache_database = btree:\${data_directory}/smtpd_scache
 
 smtp_tls_session_cache_database = btree:\${data_directory}/smtp_scache
-smtp_tls_security_level = encrypt
+smtp_tls_security_level = may
 smtp_always_send_ehlo = yes
 
 myhostname = $VMB_MYHOSTNAME
@@ -543,7 +543,9 @@ smtpd_sender_restrictions =
                             mx_access,
                             reject_unlisted_sender,
                             reject_unauth_destination
-							
+				
+smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
+
 smtpd_recipient_restrictions = verify_sender
                                white_client,
                                helo_access,
