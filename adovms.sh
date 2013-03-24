@@ -284,7 +284,16 @@ if [ "$mail_install" == "y" ];then
 		pid="$!"
 		yum -y -q install postfix dovecot dovecot-mysql dovecot-pigeonhole git subversion >/dev/null 2>&1
 		stop_progress "$pid"
-          rpm  --quiet -q postfix dovecot dovecot-mysql dovecot-pigeonhole git subversion
+		echo
+        cok "Running opendkim installation"
+		echo
+		     echo -n "     PROCESSING  "
+		start_progress &
+		pid="$!"
+		yum --enablerepo=epel-testing install opendkim
+		stop_progress "$pid"
+		echo
+          rpm  --quiet -q postfix dovecot dovecot-mysql dovecot-pigeonhole opendkim git subversion
              if [ $? = 0 ]
                 then
 		echo
@@ -296,6 +305,7 @@ if [ "$mail_install" == "y" ];then
 	echo
 		chkconfig postfix on
 		chkconfig dovecot on
+		chkconfig opendkim on
 		chkconfig exim off
 		chkconfig sendmail off
 		alternatives --set mta /usr/sbin/sendmail.postfix
@@ -365,7 +375,7 @@ printf "\033c"
 "config")
 echo
 echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-cok NOW CONFIGURING POSTFIX, DOVECOT, ViMbAdmin AND NGINX
+cok NOW CONFIGURING POSTFIX, DOVECOT, OPENDKIM, ViMbAdmin AND NGINX
 echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 echo
 printf "\033c"
@@ -433,10 +443,10 @@ query = SELECT maildir FROM mailbox WHERE username = '%s' AND active = '1'
 END
 echo
 cecho "Writing Postfix main.cf file"
-read -p "---> Enter your mail domain : " VMB_DOMAIN
+read -p "---> Enter your domain : " VMB_DOMAIN
+read -p "---> Enter your hostname : " VMB_MYHOSTNAME
 read -e -p "---> Enter your ssl cert location: " -i "/etc/ssl/domain.crt"  VMB_SSL_CRT
 read -e -p "---> Enter your ssl key location: " -i "/etc/ssl/server.key"  VMB_SSL_KEY
-VMB_MYHOSTNAME=$(echo $HOSTNAME)
 cat > /etc/postfix/main.cf <<END
 smtpd_banner = \$myhostname ESMTP Goofy
 
@@ -521,6 +531,11 @@ block_dsl            = regexp:$additional_config_dir/block_dsl
 helo_access          = check_helo_access pcre:$additional_config_dir/helo_checks
 mx_access            = check_sender_mx_access cidr:$additional_config_dir/mx_access
 
+smtpd_milters           = inet:127.0.0.1:8891
+non_smtpd_milters       = $smtpd_milters
+milter_default_action   = quarantine
+milter_protocol   = 6
+
 
 smtpd_client_restrictions =
                             white_client_ip,
@@ -575,7 +590,18 @@ smtpd_recipient_restrictions = verify_sender
 smtpd_data_restrictions =
                           reject_unauth_pipelining,
                           reject_multi_recipient_bounce
-
+						  
+sample_directory = /usr/share/doc/postfix-2.10.0/samples
+sendmail_path = /usr/sbin/sendmail
+setgid_group = postdrop
+command_directory = /usr/sbin
+manpage_directory = /usr/share/man
+daemon_directory = /usr/libexec/postfix
+newaliases_path = /usr/bin/newaliases
+mailq_path = /usr/bin/mailq
+queue_directory = /var/spool/postfix
+mail_owner = postfix
+data_directory = /var/lib/postfix
 END
 
 echo
@@ -754,6 +780,78 @@ cat > /etc/postfix/config/white_client_ip <<END
 #/91\.214\.209\.5/        PERMIT
 END
 echo
+echo
+cecho "============================================================================="
+echo
+cecho "Now we going to configure opendkim - generating signing key and configs"
+echo
+pause '------> Press [Enter] key to proceed'
+echo
+mkdir -p /etc/opendkim/keys/$VMB_DOMAIN
+opendkim-genkey -D /etc/opendkim/keys/$VMB_DOMAIN/ -d $VMB_DOMAIN -s default
+chown -R opendkim:opendkim /etc/opendkim/keys/$VMB_DOMAIN
+cd /etc/opendkim/keys/$VMB_DOMAIN
+cp default.private default
+cecho "Loading main opendkim config"
+cat > /etc/postfix/config/helo_checks <<END
+## BASIC OPENDKIM CONFIGURATION FILE
+## BEFORE running OpenDKIM you must:
+## - edit your DNS records to publish your public keys
+
+## CONFIGURATION OPTIONS
+PidFile /var/run/opendkim/opendkim.pid
+AutoRestart     yes
+AutoRestartRate 5/1h
+Mode    sv
+Syslog  yes
+SyslogSuccess   yes
+LogWhy  yes
+UserID  opendkim:opendkim
+Socket  inet:8891@localhost
+Umask   002
+## SIGNING OPTIONS
+Canonicalization        relaxed/simple
+Selector        default
+MinimumKeyBits 1024
+KeyFile /etc/opendkim/keys/$VMB_DOMAIN/default.private
+KeyTable        /etc/opendkim/KeyTable
+SigningTable    refile:/etc/opendkim/SigningTable
+END
+echo
+cecho "Loading opendkim KeyTable"
+cat > /etc/opendkim/KeyTable <<END
+# To use this file, uncomment the #KeyTable option in /etc/opendkim.conf,
+# then uncomment the following line and replace example.com with your domain
+# name, then restart OpenDKIM. Additional keys may be added on separate lines.
+
+default._domainkey.$VMB_DOMAIN $VMB_DOMAIN:default:/etc/opendkim/keys/$VMB_DOMAIN/default.private
+END
+echo
+cecho "Loading opendkim SigningTable"
+cat > /etc/opendkim/KeyTable <<END
+# The following wildcard will work only if
+# refile:/etc/opendkim/SigningTable is included
+# in /etc/opendkim.conf.
+
+*@$VMB_DOMAIN default._domainkey.$VMB_DOMAIN
+END
+echo
+cecho "============================================================================="
+cecho "============================================================================="
+cecho "Update the DNS records"
+cecho "This is the final part. You need to add a TXT entry default._domainkey"
+echo
+DKIM_RECORD=$(cat /etc/opendkim/keys/$VMB_DOMAIN/default.txt)
+cok "$DKIM_RECORD"
+echo
+cecho "You should also add another TXT Record to your zone file"
+cok "_adsp._domainkey.$VMB_DOMAIN IN TXT dkim=unknown"
+echo
+pause '------> Press [Enter] key to continue'
+echo
+echo
+cecho "============================================================================="
+cecho "============================================================================="
 echo
 VMB_PATH=$(cat ~/adovms/.adovms_index | grep mail | awk '{print $2}')
 cecho "Now we will try to edit ViMbAdmin application.ini file:"
