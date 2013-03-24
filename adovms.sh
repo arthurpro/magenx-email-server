@@ -447,6 +447,8 @@ queue_run_delay = 1h
 minimal_backoff_time = 1h
 maximal_queue_lifetime = 3h
 maximal_backoff_time = 3h
+bounce_queue_lifetime = 3h
+
 
 biff = no
 append_dot_mydomain = no
