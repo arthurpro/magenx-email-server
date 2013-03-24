@@ -290,7 +290,7 @@ if [ "$mail_install" == "y" ];then
 		     echo -n "     PROCESSING  "
 		start_progress &
 		pid="$!"
-		yum --enablerepo=epel-testing install opendkim
+		yum --enablerepo=epel-testing install opendkim >/dev/null 2>&1
 		stop_progress "$pid"
 		echo
           rpm  --quiet -q postfix dovecot dovecot-mysql dovecot-pigeonhole opendkim git subversion
