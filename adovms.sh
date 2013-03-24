@@ -458,6 +458,7 @@ broken_sasl_auth_clients = no
 
 additional_config_dir = /etc/postfix/config
 
+smtpd_forbidden_commands = CONNECT GET POST
 smtpd_tls_cert_file = $VMB_SSL_CRT
 smtpd_tls_key_file = $VMB_SSL_KEY
 smtpd_tls_auth_only = yes
@@ -571,8 +572,8 @@ smtpd_recipient_restrictions = verify_sender
 
 smtpd_data_restrictions =
                           reject_unauth_pipelining,
-                          reject_multi_recipient_bounce,
-                          permit
+                          reject_multi_recipient_bounce
+
 END
 
 echo
