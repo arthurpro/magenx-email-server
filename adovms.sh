@@ -793,8 +793,8 @@ chown -R opendkim:opendkim /etc/opendkim/keys/$VMB_DOMAIN
 cd /etc/opendkim/keys/$VMB_DOMAIN
 cp default.private default
 cecho "Loading main opendkim config"
+
 cat > /etc/postfix/config/helo_checks <<END
-## BASIC OPENDKIM CONFIGURATION FILE
 ## BEFORE running OpenDKIM you must:
 ## - edit your DNS records to publish your public keys
 
@@ -819,6 +819,7 @@ SigningTable    refile:/etc/opendkim/SigningTable
 END
 echo
 cecho "Loading opendkim KeyTable"
+
 cat > /etc/opendkim/KeyTable <<END
 # To use this file, uncomment the #KeyTable option in /etc/opendkim.conf,
 # then uncomment the following line and replace example.com with your domain
@@ -828,6 +829,7 @@ default._domainkey.$VMB_DOMAIN $VMB_DOMAIN:default:/etc/opendkim/keys/$VMB_DOMAI
 END
 echo
 cecho "Loading opendkim SigningTable"
+
 cat > /etc/opendkim/KeyTable <<END
 # The following wildcard will work only if
 # refile:/etc/opendkim/SigningTable is included
