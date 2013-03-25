@@ -6,7 +6,7 @@
 #  All rights reserved.                                              #
 #====================================================================#
 
-ADOVMS_VER="2.0a"
+ADOVMS_VER="2.1a"
 
 # quick-n-dirty - color, indent, echo, pause, proggress bar settings
 function cecho() {
