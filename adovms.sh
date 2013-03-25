@@ -794,7 +794,7 @@ cd /etc/opendkim/keys/$VMB_DOMAIN
 cp default.private default
 cecho "Loading main opendkim config"
 
-cat > /etc/postfix/config/helo_checks <<END
+cat > /etc/opendkim.conf <<END
 ## BEFORE running OpenDKIM you must:
 ## - edit your DNS records to publish your public keys
 
