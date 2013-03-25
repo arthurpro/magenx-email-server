@@ -445,6 +445,7 @@ echo
 cecho "Writing Postfix main.cf file"
 read -p "---> Enter your domain : " VMB_DOMAIN
 read -p "---> Enter your hostname : " VMB_MYHOSTNAME
+read -p "---> Enter your admin email : " VMB_ADMIN_MAIL
 read -e -p "---> Enter your ssl cert location: " -i "/etc/ssl/domain.crt"  VMB_SSL_CRT
 read -e -p "---> Enter your ssl key location: " -i "/etc/ssl/server.key"  VMB_SSL_KEY
 cat > /etc/postfix/main.cf <<END
@@ -536,6 +537,8 @@ non_smtpd_milters       = $smtpd_milters
 milter_default_action   = quarantine
 milter_protocol   = 6
 
+notify_classes = bounce, delay, policy, protocol, resource, software
+error_notice_recipient = $VMB_ADMIN_MAIL
 
 smtpd_client_restrictions =
                             white_client_ip,
@@ -705,7 +708,7 @@ userdb {
 protocol lda {
   auth_socket_path = /var/run/dovecot/auth-master
   log_path = /home/vmail/dovecot-deliver.log
-  postmaster_address = postmaster@$VMB_DOMAIN
+  postmaster_address = $VMB_ADMIN_MAIL
 }
 END
 
