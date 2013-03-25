@@ -32,3 +32,5 @@ A webserver installed, ready to use, supporting PHP & setup for virtual hosting<
 *- Nginx*<br/>
 *- Lighttpd*<br/>
 *- PHP*<br/>
+<br/><br/>
+Please read the ViMbAdmin documentation on how to configure the web interface.
