@@ -524,16 +524,16 @@ rbl_dul_ru           = reject_rbl_client dul.ru
 rbl_sbl_spamhaus_org = reject_rbl_client sbl.spamhaus.org
 rbl_spamcop          = reject_rbl_client bl.spamcop.net
 
-white_client_ip      = check_client_access pcre:$additional_config_dir/white_client_ip
-black_client_ip      = check_client_access pcre:$additional_config_dir/black_client_ip
-white_client         = check_sender_access pcre:$additional_config_dir/white_client
-black_client         = check_sender_access pcre:$additional_config_dir/black_client
-block_dsl            = regexp:$additional_config_dir/block_dsl
-helo_access          = check_helo_access pcre:$additional_config_dir/helo_checks
-mx_access            = check_sender_mx_access cidr:$additional_config_dir/mx_access
+white_client_ip      = check_client_access pcre:\$additional_config_dir/white_client_ip
+black_client_ip      = check_client_access pcre:\$additional_config_dir/black_client_ip
+white_client         = check_sender_access pcre:\$additional_config_dir/white_client
+black_client         = check_sender_access pcre:\$additional_config_dir/black_client
+block_dsl            = regexp:\$additional_config_dir/block_dsl
+helo_access          = check_helo_access pcre:\$additional_config_dir/helo_checks
+mx_access            = check_sender_mx_access cidr:\$additional_config_dir/mx_access
 
 smtpd_milters           = inet:127.0.0.1:8891
-non_smtpd_milters       = $smtpd_milters
+non_smtpd_milters       = \$smtpd_milters
 milter_default_action   = quarantine
 milter_protocol   = 6
 
