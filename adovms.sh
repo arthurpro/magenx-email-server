@@ -833,7 +833,7 @@ END
 echo
 cecho "Loading opendkim SigningTable"
 
-cat > /etc/opendkim/KeyTable <<END
+cat > /etc/opendkim/SigningTable <<END
 # The following wildcard will work only if
 # refile:/etc/opendkim/SigningTable is included
 # in /etc/opendkim.conf.
