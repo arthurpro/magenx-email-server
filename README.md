@@ -23,7 +23,7 @@ Setting up the framework for an advanced virtual mail server.
 <br/><br/>
 **Prerequisites:**<br/>
 meet the follow prerequisites:<br/>
-CentOS 6 x64<br/>
+**CentOS 6 x64**<br/>
 A supported database server is installed and ready for use<br/>
 The Admin has an understanding of basic SQL functions.<br/>
 *- MySQL 5.5+*<br/>
