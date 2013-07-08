@@ -14,7 +14,7 @@ About this setup
 ----------------
 Setting up the framework for an advanced virtual mail server.<br/>
 you can easily control unlimited virtual domains, mailboxes and aliases.<br/>
-create super admin and domain admin.simple own mail server.
+create super admin and domain admin.
 <br/><br/><br/>
 **This script will be using:**<br/>
 *- [ViMbAdmin](https://github.com/opensolutions/ViMbAdmin)*<br/>
