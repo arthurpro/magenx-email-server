@@ -537,8 +537,8 @@ non_smtpd_milters       = \$smtpd_milters
 milter_default_action   = quarantine
 milter_protocol   = 6
 
-notify_classes = bounce, delay, policy, protocol, resource, software
-error_notice_recipient = $VMB_ADMIN_MAIL
+#notify_classes = bounce, delay, policy, protocol, resource, software
+#error_notice_recipient = $VMB_ADMIN_MAIL
 
 smtpd_client_restrictions =
                             white_client_ip,
