@@ -1,6 +1,9 @@
 ADOVMS-M
 ========
 
+will work only for vimbadmin < 3
+version > 3 fix will be provided soon
+
 ##Automated Deployment of Virtual Mail Server<br/>
 connection: SSL/TLS<br/>
 SMTP SSL Port 465<br/>
