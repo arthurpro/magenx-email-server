@@ -178,7 +178,7 @@ if [ "$repoE_install" == "y" ];then
               then
               cok "ALREADY INSTALLED"
 		else
-		rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm >/dev/null 2>&1
+		rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
         fi
 	else
         cinfo "EPEL repository installation skipped. Next step"
@@ -197,7 +197,7 @@ if [ "$repoC_install" == "y" ];then
               then
               cok "ALREADY INSTALLED"
 		else
-		rpm -Uvh http://centos.alt.ru/pub/repository/centos/6/x86_64/centalt-release-6-1.noarch.rpm >/dev/null 2>&1
+		rpm -Uvh http://centos.alt.ru/pub/repository/centos/6/x86_64/centalt-release-6-1.noarch.rpm
         fi
 	echo
   else
@@ -217,7 +217,7 @@ if [ "$repoF_install" == "y" ];then
               then
               cok "ALREADY INSTALLED"
 		else
-		rpm -Uvh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm >/dev/null 2>&1
+		rpm -Uvh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
         fi
 	echo
   else
@@ -246,11 +246,11 @@ if [ "$mail_install" == "y" ];then
 		echo
         cok "Running mail packages installation"
 		echo
-		yum -y -q install postfix dovecot dovecot-mysql dovecot-pigeonhole git subversion >/dev/null 2>&1
+		yum -y -q install postfix dovecot dovecot-mysql dovecot-pigeonhole git subversion
 		echo
         cok "Running opendkim installation"
 		echo
-		yum --enablerepo=epel-testing -y -q  install opendkim >/dev/null 2>&1
+		yum --enablerepo=epel-testing -y -q  install opendkim
 		echo
           rpm  --quiet -q postfix dovecot dovecot-mysql dovecot-pigeonhole opendkim git subversion
              if [ $? = 0 ]
@@ -302,7 +302,7 @@ if [ "$vmb_down" == "y" ];then
 		###################################################
 		git config --global url."https://".insteadOf git://
 		###################################################
-        git clone git://github.com/opensolutions/ViMbAdmin.git .  >/dev/null 2>&1
+        git clone git://github.com/opensolutions/ViMbAdmin.git .
 		echo
 		echo "  Installing Third Party Libraries"
 		echo
