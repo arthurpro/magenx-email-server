@@ -823,10 +823,10 @@ sed -i 's/defaults.domain.transport = "virtual"/defaults.domain.transport = "dov
 sed -i 's/defaults.mailbox.uid = 2000/defaults.mailbox.uid = 5000/' $VMB_PATH/application/configs/application.ini
 sed -i 's/defaults.mailbox.gid = 2000/defaults.mailbox.gid = 5000/' $VMB_PATH/application/configs/application.ini
 sed -i 's/server.pop3.enabled = 1/server.pop3.enabled = 0/' $VMB_PATH/application/configs/application.ini
-sed -i 's/resources.doctrine2.connection.options.dbname   = 'vimbadmin'/resources.doctrine2.connection.options.dbname   = '$VMB_DB_NAME'/' $VMB_PATH/application/configs/application.ini
-sed -i 's/resources.doctrine2.connection.options.user     = 'vimbadmin'/resources.doctrine2.connection.options.user     = '$VMB_DB_USER_NAME'/' $VMB_PATH/application/configs/application.ini
-sed -i 's/resources.doctrine2.connection.options.password = 'password'/resources.doctrine2.connection.options.password = '$VMB_PASSGEN'/' $VMB_PATH/application/configs/application.ini
-sed -i 's/resources.doctrine2.connection.options.host     = 'localhost'/resources.doctrine2.connection.options.host     = '$VMB_DB_HOST'/' $VMB_PATH/application/configs/application.ini
+sed -i "s/resources.doctrine2.connection.options.dbname   = 'vimbadmin'/resources.doctrine2.connection.options.dbname   = '$VMB_DB_NAME'/" $VMB_PATH/application/configs/application.ini
+sed -i "s/resources.doctrine2.connection.options.user     = 'vimbadmin'/resources.doctrine2.connection.options.user     = '$VMB_DB_USER_NAME'/" $VMB_PATH/application/configs/application.ini
+sed -i "s/resources.doctrine2.connection.options.password = 'xxx'/resources.doctrine2.connection.options.password = '$VMB_PASSGEN'/" $VMB_PATH/application/configs/application.ini
+sed -i "s/resources.doctrine2.connection.options.host     = 'localhost'/resources.doctrine2.connection.options.host     = '$VMB_DB_HOST'/" $VMB_PATH/application/configs/application.ini
 echo
 cecho "Creating ViMbAdmin v3 database tables:"
 ./bin/doctrine2-cli.php orm:schema-tool:create
