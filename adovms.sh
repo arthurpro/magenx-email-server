@@ -246,7 +246,7 @@ if [ "$mail_install" == "y" ];then
 		echo
         cok "Running mail packages installation"
 		echo
-		yum -y -q install postfix dovecot dovecot-mysql dovecot-pigeonhole git subversion
+		yum -y -q --disablerepo=ius install postfix dovecot dovecot-mysql dovecot-pigeonhole git subversion
 		echo
         cok "Running opendkim installation"
 		echo
