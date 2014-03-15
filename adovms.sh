@@ -6,7 +6,7 @@
 #  All rights reserved.                                              #
 #====================================================================#
 
-ADOVMS_VER="2.1a"
+ADOVMS_VER="3.0.6b"
 
 # quick-n-dirty - color, indent, echo, pause, proggress bar settings
 function cecho() {
@@ -38,39 +38,6 @@ function pause() {
    read -p "$*"
 }
 
-function start_progress {
-  interval=1
-  while true
-  do
-    echo -ne "#"
-    sleep $interval
-  done
-}
-
-function quick_progress {
-  interval=0.05
-  while true
-  do
-    echo -ne "#"
-    sleep $interval
-  done
-}
-
-function long_progress {
-  interval=3
-  while true
-  do
-    echo -ne "#"
-    sleep $interval
-  done
-}
-
-function stop_progress {
-kill $1
-wait $1 2>/dev/null
-echo -en "\n"
-}
-
 clear
 ###################################################################################
 #                                     START CHECKS                                #
@@ -96,7 +63,7 @@ echo
   exit 1
 fi
 
-# check if x64. if not, beat it...
+# check if x64.
 ARCH=$(uname -m)
 if [ "$ARCH" = "x86_64" ]; then
 cok "PASS: YOUR ARCHITECTURE IS 64-BIT"
@@ -119,6 +86,17 @@ cwarn "ERROR: NETWORK IS DOWN?"
 echo "------> PLEASE CHECK YOUR NETWORK SETTINGS."
 echo
 echo
+  exit 1
+fi
+
+# we need php > 5.4.x
+PHPVER=$(php -r \@phpinfo\(\)\; | grep 'PHP Version' -m 1 | awk {'print $4'})
+if [ "$PHPVER" -gt "5.4" ]; then
+cok "PASS: YOUR PHP IS 5.4"
+  else
+  cwarn "ERROR: YOUR PHP VERSION IS NOT 5.4"
+  echo "------> CONFIGURATION FOR PHP 5.4 ONLY."
+  echo
   exit 1
 fi
 echo
@@ -199,11 +177,7 @@ if [ "$repoE_install" == "y" ];then
               then
               cok "ALREADY INSTALLED"
 		else
-        echo -n "     PROCESSING  "
-		quick_progress &
-		pid="$!"
 		rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm >/dev/null 2>&1
-		stop_progress "$pid"
         fi
 	else
         cinfo "EPEL repository installation skipped. Next step"
@@ -222,11 +196,7 @@ if [ "$repoC_install" == "y" ];then
               then
               cok "ALREADY INSTALLED"
 		else
-		echo -n "     PROCESSING  "
-		quick_progress &
-		pid="$!"
 		rpm -Uvh http://centos.alt.ru/pub/repository/centos/6/x86_64/centalt-release-6-1.noarch.rpm >/dev/null 2>&1
-		stop_progress "$pid"
         fi
 	echo
   else
@@ -246,11 +216,7 @@ if [ "$repoF_install" == "y" ];then
               then
               cok "ALREADY INSTALLED"
 		else
-        echo -n "     PROCESSING  "
-		quick_progress &
-		pid="$!"
 		rpm -Uvh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm >/dev/null 2>&1
-		stop_progress "$pid"
         fi
 	echo
   else
@@ -279,19 +245,11 @@ if [ "$mail_install" == "y" ];then
 		echo
         cok "Running mail packages installation"
 		echo
-			echo -n "     PROCESSING  "
-		long_progress &
-		pid="$!"
 		yum -y -q install postfix dovecot dovecot-mysql dovecot-pigeonhole git subversion >/dev/null 2>&1
-		stop_progress "$pid"
 		echo
         cok "Running opendkim installation"
 		echo
-		     echo -n "     PROCESSING  "
-		start_progress &
-		pid="$!"
 		yum --enablerepo=epel-testing -y -q  install opendkim >/dev/null 2>&1
-		stop_progress "$pid"
 		echo
           rpm  --quiet -q postfix dovecot dovecot-mysql dovecot-pigeonhole opendkim git subversion
              if [ $? = 0 ]
@@ -327,7 +285,7 @@ echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 cok NOW DOWNLOADING ViMbAdmin
 echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 echo
-echo -n "---> Download and configure ViMbAdmin? [y/n][n]:"
+echo -n "---> Download and configure ViMbAdmin 3? [y/n][n]:"
 read vmb_down
 if [ "$vmb_down" == "y" ];then
      read -e -p "---> Edit your installation folder full path: " -i "/var/www/html/vmb" VMB_PATH
@@ -343,22 +301,18 @@ if [ "$vmb_down" == "y" ];then
 		###################################################
 		git config --global url."https://".insteadOf git://
 		###################################################
-			echo -n "     PROCESSING  "
-		long_progress &
-		pid="$!"
         git clone git://github.com/opensolutions/ViMbAdmin.git .  >/dev/null 2>&1
-		stop_progress "$pid"
 		echo
 		echo "  Installing Third Party Libraries"
 		echo
         cd $VMB_PATH
+		echo "  Get composer"
+		curl -sS https://getcomposer.org/installer | php
+		mv composer.phar composer
 		echo
-			echo -n "     PROCESSING  "
-		long_progress &
-		pid="$!"
-        ./bin/library-init.sh  >/dev/null 2>&1
-        stop_progress "$pid"
-
+        composer install
+		cp $VMB_PATH/public/.htaccess.dist $VMB_PATH/public/.htaccess
+echo
 cat > ~/adovms/.adovms_index <<END
 mail	$VMB_PATH
 END
@@ -405,6 +359,7 @@ mysql -u root -p$MYSQL_ROOT_PASS <<EOMYSQL
 CREATE USER '$VMB_DB_USER_NAME'@'$VMB_DB_HOST' IDENTIFIED BY '$VMB_PASSGEN';
 CREATE DATABASE $VMB_DB_NAME;
 GRANT ALL PRIVILEGES ON $VMB_DB_NAME.* TO '$VMB_DB_USER_NAME'@'$VMB_DB_HOST' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
 exit
 EOMYSQL
 echo
@@ -859,7 +814,7 @@ cecho "=========================================================================
 cecho "============================================================================="
 echo
 VMB_PATH=$(cat ~/adovms/.adovms_index | grep mail | awk '{print $2}')
-cecho "Now we will try to edit ViMbAdmin application.ini file:"
+cecho "Now we will try to edit ViMbAdmin v3 application.ini file:"
 cecho "$VMB_PATH/application/configs/application.ini"
 cd $VMB_PATH
 cp $VMB_PATH/application/configs/application.ini.dist $VMB_PATH/application/configs/application.ini
@@ -867,14 +822,17 @@ sed -i 's/defaults.domain.transport = "virtual"/defaults.domain.transport = "dov
 sed -i 's/defaults.mailbox.uid = 2000/defaults.mailbox.uid = 5000/' $VMB_PATH/application/configs/application.ini
 sed -i 's/defaults.mailbox.gid = 2000/defaults.mailbox.gid = 5000/' $VMB_PATH/application/configs/application.ini
 sed -i 's/server.pop3.enabled = 1/server.pop3.enabled = 0/' $VMB_PATH/application/configs/application.ini
-sed -i "196i resources.doctrine.connection_string = \"mysql://$VMB_DB_USER_NAME:$VMB_PASSGEN@$VMB_DB_HOST/$VMB_DB_NAME\"" $VMB_PATH/application/configs/application.ini
+sed -i 's/resources.doctrine2.connection.options.dbname   = 'vimbadmin'/resources.doctrine2.connection.options.dbname   = '$VMB_DB_NAME'/' $VMB_PATH/application/configs/application.ini
+sed -i 's/resources.doctrine2.connection.options.user     = 'vimbadmin'/resources.doctrine2.connection.options.user     = '$VMB_DB_USER_NAME'/' $VMB_PATH/application/configs/application.ini
+sed -i 's/resources.doctrine2.connection.options.password = 'password'/resources.doctrine2.connection.options.password = '$VMB_PASSGEN'/' $VMB_PATH/application/configs/application.ini
+sed -i 's/resources.doctrine2.connection.options.host     = 'localhost'/resources.doctrine2.connection.options.host     = '$VMB_DB_HOST'/' $VMB_PATH/application/configs/application.ini
 echo
-cecho "Creating ViMbAdmin database tables:"
-./bin/doctrine-cli.php create-tables
+cecho "Creating ViMbAdmin v3 database tables:"
+./bin/doctrine2-cli.php orm:schema-tool:create
 echo
 cecho "Now edit $VMB_PATH/application/configs/application.ini and configure all parameters in the [user] section"
 cecho "except securitysalt - easier to do that later when you first run web frontend"
-cecho "monitor mail log at tail -f /var/log/maillog"
+cecho "monitor mail log   tail -f /var/log/maillog"
 echo
 fi
 echo
