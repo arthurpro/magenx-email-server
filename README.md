@@ -20,11 +20,11 @@ you can easily control unlimited virtual domains, mailboxes and aliases.<br/>
 create super admin and domain admin.
 <br/><br/><br/>
 **This script will be using:**<br/>
-*- [ViMbAdmin](https://github.com/opensolutions/ViMbAdmin)*<br/>
-*- [Postfix](http://www.postfix.org/) 2.10.0*<br/>
-*- [Dovecot](http://dovecot.org/) 2.0.21*<br/>
-*- [Dovecot-Mysql](http://wiki2.dovecot.org/AuthDatabase/SQL) 2.0.21*<br/>
-*- [OpenDKIM](http://www.opendkim.org/) 2.8.1* <br/>
+*- [ViMbAdmin](https://github.com/opensolutions/ViMbAdmin) latest*<br/>
+*- [Postfix](http://www.postfix.org/) latest*<br/>
+*- [Dovecot](http://dovecot.org/) latest*<br/>
+*- [Dovecot-Mysql](http://wiki2.dovecot.org/AuthDatabase/SQL) latest*<br/>
+*- [OpenDKIM](http://www.opendkim.org/) latest* <br/>
 <br/><br/>
 **Prerequisites:**<br/>
 meet the follow prerequisites:<br/>
