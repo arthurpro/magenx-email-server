@@ -1,5 +1,4 @@
 #!/bin/bash
-#
 #====================================================================#
 #  MagenX - Automated Deployment of Virtual Mail Server              #
 #  Copyright (C) 2013 admin@magentomod.com                           #
