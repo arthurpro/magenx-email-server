@@ -91,11 +91,11 @@ fi
 
 # we need php > 5.4.x
 PHPVER=$(php -r \@phpinfo\(\)\; | grep 'PHP Version' -m 1 | awk {'print $4'} | cut -d'.' -f 2)
-if [[ $PHPVER == 4 ]]; then
-cok "PASS: YOUR PHP IS 5.4"
+if [ $PHPVER = 4 ] || [ $PHPVER > 4 ]; then
+cok "PASS: YOUR PHP IS $(php -r \@phpinfo\(\)\; | grep 'PHP Version' -m 1 | awk {'print $4'})"
   else
-  cwarn "ERROR: YOUR PHP VERSION IS NOT 5.4"
-  echo "------> CONFIGURATION FOR PHP 5.4 ONLY."
+  cwarn "ERROR: YOUR PHP VERSION IS NOT > 5.4"
+  echo "------> CONFIGURATION FOR PHP > 5.4 ONLY."
   echo
   exit 1
 fi
