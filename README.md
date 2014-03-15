@@ -1,8 +1,7 @@
 ADOVMS-M
 ========
 
-will work only for vimbadmin < 3
-version > 3 fix will be provided soon
+will work only for vimbadmin > 3
 
 ##Automated Deployment of Virtual Mail Server<br/>
 connection: SSL/TLS<br/>
