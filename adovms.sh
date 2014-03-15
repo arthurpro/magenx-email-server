@@ -827,6 +827,8 @@ sed -i "s/resources.doctrine2.connection.options.dbname   = 'vimbadmin'/resource
 sed -i "s/resources.doctrine2.connection.options.user     = 'vimbadmin'/resources.doctrine2.connection.options.user     = '$VMB_DB_USER_NAME'/" $VMB_PATH/application/configs/application.ini
 sed -i "s/resources.doctrine2.connection.options.password = 'xxx'/resources.doctrine2.connection.options.password = '$VMB_PASSGEN'/" $VMB_PATH/application/configs/application.ini
 sed -i "s/resources.doctrine2.connection.options.host     = 'localhost'/resources.doctrine2.connection.options.host     = '$VMB_DB_HOST'/" $VMB_PATH/application/configs/application.ini
+sed -i 's,defaults.mailbox.maildir = "maildir:/srv/vmail/%d/%u/mail:LAYOUT=fs",defaults.mailbox.maildir = "maildir:/home/vmail/%d/%u",'  $VMB_PATH/application/configs/application.ini
+sed -i 's,defaults.mailbox.homedir = "/srv/vmail/%d/%u",defaults.mailbox.homedir = "/home/vmail/%d/%u",' $VMB_PATH/application/configs/application.ini
 echo
 cecho "Creating ViMbAdmin v3 database tables:"
 ./bin/doctrine2-cli.php orm:schema-tool:create
