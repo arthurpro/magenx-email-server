@@ -311,7 +311,7 @@ if [ "$vmb_down" == "y" ];then
 		curl -sS https://getcomposer.org/installer | php
 		mv composer.phar composer
 		echo
-        composer install
+        ./composer install
 		cp $VMB_PATH/public/.htaccess.dist $VMB_PATH/public/.htaccess
 echo
 cat > ~/adovms/.adovms_index <<END
