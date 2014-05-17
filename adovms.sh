@@ -631,16 +631,27 @@ namespace {
   prefix =
   type = private
 }
-passdb {
-  args = /etc/dovecot/dovecot-sql.conf
-  driver = sql
-}
+
 protocols = imap
 
 service imap-login {
         inet_listener imap {
         port = 0
         }
+}
+
+passdb {
+  driver = sql
+  args = /etc/dovecot/dovecot-sql.conf
+}
+ 
+userdb {
+  driver = prefetch
+}
+ 
+userdb {
+  driver = sql
+  args = /etc/dovecot/dovecot-sql.conf
 }
 
 service auth {
@@ -656,10 +667,6 @@ unix_listener auth-master {
 user = root
 }
 
-userdb {
-  args = uid=5000 gid=5000 home=/home/vmail/%d/%n allow_all_users=yes
-  driver = static
-}
 protocol lda {
   auth_socket_path = /var/run/dovecot/auth-master
   log_path = /home/vmail/dovecot-deliver.log
