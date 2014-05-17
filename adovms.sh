@@ -690,7 +690,7 @@ password_query = SELECT username as user, password as password, \
             
 user_query = SELECT homedir AS home, maildir AS mail, \
         concat('*:bytes=', quota) as quota_rule, uid, gid \
-    FROM Mailbox WHERE username = '%u'
+    FROM mailbox WHERE username = '%u'
 END
 
 echo
