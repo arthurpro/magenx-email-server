@@ -672,8 +672,18 @@ cecho "Writing Dovecot mysql connection file"
 cat > /etc/dovecot/dovecot-sql.conf <<END
 driver = mysql
 connect = host=127.0.0.1 dbname=$VMB_DB_NAME user=$VMB_DB_USER_NAME password=$VMB_PASSGEN
-default_pass_scheme = PLAIN-MD5
-password_query = SELECT username as user, password FROM mailbox WHERE username = '%u'
+default_pass_scheme = MD5
+
+password_query = SELECT username as user, password as password, \
+        homedir AS userdb_home, maildir AS userdb_mail, \
+        concat('*:bytes=', quota) AS userdb_quota_rule, uid AS userdb_uid, gid AS userdb_gid \
+    FROM mailbox \
+        WHERE username = '%Lu' AND active = '1' \
+            AND ( access_restriction = 'ALL' OR LOCATE( '%Us', access_restriction ) > 0 )name = '%u'
+            
+user_query = SELECT homedir AS home, maildir AS mail, \
+        concat('*:bytes=', quota) as quota_rule, uid, gid \
+    FROM Mailbox WHERE username = '%u'
 END
 
 echo
