@@ -4,7 +4,7 @@ ADOVMS-M
 will work only for ViMbAdmin > 3<br/>
 https://github.com/opensolutions/ViMbAdmin
 
-##Automated Deployment of Virtual Mail Server<br/>
+##Aow to setup mail server with Centos, Postfix, Dovecot, OpenDKIM and ViMbAdmin<br/>
 connection: SSL/TLS<br/>
 SMTP SSL Port 465<br/>
 IMAP SSL Port 993<br/>
