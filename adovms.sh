@@ -679,7 +679,7 @@ cecho "Writing Dovecot mysql connection file"
 cat > /etc/dovecot/dovecot-sql.conf <<END
 driver = mysql
 connect = host=127.0.0.1 dbname=$VMB_DB_NAME user=$VMB_DB_USER_NAME password=$VMB_PASSGEN
-default_pass_scheme = MD5
+default_pass_scheme = SSHA512
 
 password_query = SELECT username as user, password as password, \
         homedir AS userdb_home, maildir AS userdb_mail, \
@@ -845,6 +845,7 @@ sed -i "s/resources.doctrine2.connection.options.password = 'xxx'/resources.doct
 sed -i "s/resources.doctrine2.connection.options.host     = 'localhost'/resources.doctrine2.connection.options.host     = '$VMB_DB_HOST'/" $VMB_PATH/application/configs/application.ini
 sed -i 's,defaults.mailbox.maildir = "maildir:/srv/vmail/%d/%u/mail:LAYOUT=fs",defaults.mailbox.maildir = "maildir:/home/vmail/%d/%u",'  $VMB_PATH/application/configs/application.ini
 sed -i 's,defaults.mailbox.homedir = "/srv/vmail/%d/%u",defaults.mailbox.homedir = "/home/vmail/%d/%u",' $VMB_PATH/application/configs/application.ini
+sed -i 's/defaults.mailbox.password_scheme = "md5.salted"/defaults.mailbox.password_scheme = "dovecot:SSHA512"/' $VMB_PATH/application/configs/application.ini
 sed -i 's/server.email.name = "ViMbAdmin Administrator"/server.email.name = "eMail Administrator"/' $VMB_PATH/application/configs/application.ini
 sed -i 's/server.email.address = "support@example.com"/server.email.address = "'$VMB_ADMIN_MAIL'"/' $VMB_PATH/application/configs/application.ini
 echo
