@@ -616,7 +616,7 @@ auth_mechanisms = plain login
 disable_plaintext_auth = yes
 log_timestamp = "%Y-%m-%d %H:%M:%S "
 mail_location = maildir:/home/vmail/%d/%n
-mail_privileged_group = mail
+mail_privileged_group = vmail
 
 ssl = required
 
