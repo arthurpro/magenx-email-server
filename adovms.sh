@@ -5,7 +5,7 @@
 #  All rights reserved.                                              #
 #====================================================================#
 
-ADOVMS_VER="3.0.7"
+ADOVMS_VER="3.0.7-3"
 
 # quick-n-dirty - color, indent, echo, pause, proggress bar settings
 function cecho() {
@@ -143,8 +143,9 @@ printf "\033c"
         echo
         cecho "- For repositories installation enter   :  \033[01;34m repo"
         cecho "- For packages installation enter   :  \033[01;34m packages"
-	cecho "- Download and configure vimbadmin :  \033[01;34m vimbadmin"
-        cecho "- Download and configure everything   :  \033[01;34m config"
+        cecho "- Download and configure vimbadmin :  \033[01;34m vimbadmin"
+		cecho "- Download and configure roundcube :  \033[01;34m roundcube"
+        cecho "- Setup and configure everything   :  \033[01;34m config"
         echo
         cecho :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		echo
@@ -332,10 +333,47 @@ echo
 pause '------> Press [Enter] key to show menu'
 printf "\033c"
 ;;
+"roundcube")
+echo
+echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+cok NOW DOWNLOADING ROUNDCUBE
+echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+echo
+echo -n "---> Download and configure ROUNDCUBE 1.x? [y/n][n]:"
+read rcb_down
+if [ "$rcb_down" == "y" ];then
+     read -e -p "---> Edit your installation folder full path: " -i "/var/www/html/rcb" RCB_PATH
+	 echo
+        echo "  ROUNDCUBE will be installed into:" 
+		cok $RCB_PATH
+		echo
+		pause '------> Press [Enter] key to continue'
+		echo
+		mkdir -p $RCB_PATH
+        cd $RCB_PATH
+		echo
+		wget -qO - http://downloads.sourceforge.net/project/roundcubemail/roundcubemail/1.0.1/roundcubemail-1.0.1.tar.gz | tar -xz --strip 1
+		echo
+		ls -l $RCB_PATH
+		echo
+		cok "INSTALLED"
+	echo	
+	echo	
+echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+cok FINISHED ROUNDCUBE INSTALLATION
+echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  else
+        cinfo "ROUNDCUBE installation skipped. Next step"
+fi
+echo
+echo
+pause '------> Press [Enter] key to show menu'
+printf "\033c"
+;;
 "config")
 echo
 echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-cok NOW CONFIGURING POSTFIX, DOVECOT, OPENDKIM, ViMbAdmin AND NGINX
+cok NOW CONFIGURING POSTFIX, DOVECOT, OPENDKIM, ViMbAdmin AND ROUNDCUBE
 echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 echo
 printf "\033c"
@@ -344,7 +382,7 @@ cecho "CREATING Virtual mail User and Group"
 groupadd -g 5000 vmail
 useradd -g vmail -u 5000 vmail -d /home/vmail -m -s /sbin/nologin
 echo
-cecho "CREATING ViMbAdmin DATABASE AND DATABASE USER"
+cecho "CREATING ViMbAdmin MySQL DATABASE AND USER"
 echo
 echo -n "---> Generate ViMbAdmin strong password? [y/n][n]:"
 read vmb_pass_gen
@@ -369,6 +407,39 @@ FLUSH PRIVILEGES;
 exit
 EOMYSQL
 echo
+echo
+echo -n "---> SETUP ROUNDCUBE MySQL DATABASE AND USER 1.x? [y/n][n]:"
+read rcb_sdb
+if [ "$rcb_sdb" == "y" ];then
+echo
+cecho "CREATING ROUNDCUBE MySQL DATABASE AND USER"
+echo
+echo -n "---> Generate ROUNDCUBE strong password? [y/n][n]:"
+read rcb_pass_gen
+if [ "$rcb_pass_gen" == "y" ];then
+echo
+        RCB_PASSGEN=$(head -c 500 /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 15 | head -n 1)
+                cecho "ROUNDCUBE database password: \033[01;31m $VMB_PASSGEN"
+                cok "!REMEMBER IT AND KEEP IT SAFE!"
+        fi
+	echo
+echo
+read -p "---> Enter MySQL ROOT password : " MYSQL_ROOT_PASS
+read -p "---> Enter ROUNDCUBE database host : " RCB_DB_HOST
+read -p "---> Enter ROUNDCUBE database name : " RCB_DB_NAME
+read -p "---> Enter ROUNDCUBE database user : " RCB_DB_USER_NAME
+echo
+mysql -u root -p$MYSQL_ROOT_PASS <<EOMYSQL
+CREATE USER '$RCB_DB_USER_NAME'@'$RCB_DB_HOST' IDENTIFIED BY '$RCB_PASSGEN';
+CREATE DATABASE $RCB_DB_NAME;
+GRANT ALL PRIVILEGES ON $RCB_DB_NAME.* TO '$RCB_DB_USER_NAME'@'$RCB_DB_HOST' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+exit
+EOMYSQL
+echo
+  else
+        cinfo "ROUNDCUBE installation skipped. Next step"
+fi
 echo
 cecho "============================================================================="
 echo
