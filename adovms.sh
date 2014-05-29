@@ -185,22 +185,22 @@ fi
 echo
 cecho "============================================================================="
 echo
-echo -n "---> Start CentALT Repository installation? [y/n][n]:"
+echo -n "---> Start ATrpms Testing Repository installation? [y/n][n]:"
 read repoC_install
 if [ "$repoC_install" == "y" ];then
 		echo
-        cok "Running Installation of CentALT repository"
+        cok "Running Installation of ATrpms Testing repository"
 		echo
-		rpm  --quiet -q centalt-release
+		rpm  --quiet -q atrpms-repo
            if [ "$?" = 0 ]
               then
               cok "ALREADY INSTALLED"
 		else
-		rpm -Uvh http://centos.alt.ru/pub/repository/centos/6/x86_64/centalt-release-6-1.noarch.rpm
+		rpm -Uvh http://dl.atrpms.net/el6-x86_64/atrpms/stable/atrpms-repo-6-7.el6.x86_64.rpm
         fi
 	echo
   else
-        cinfo "CentALT repository installation skipped. Next step"
+        cinfo "ATrpms Testing repository installation skipped. Next step"
 fi
 echo
 cecho "============================================================================="
@@ -245,13 +245,17 @@ if [ "$mail_install" == "y" ];then
 		echo
         cok "Running mail packages installation"
 		echo
-		yum -y install postfix dovecot dovecot-mysql dovecot-pigeonhole git subversion
+		yum -y install dovecot dovecot-pigeonhole git subversion
 		echo
         cok "Running opendkim installation"
 		echo
 		yum --enablerepo=epel-testing -y install opendkim
 		echo
-          rpm  --quiet -q postfix dovecot dovecot-mysql dovecot-pigeonhole opendkim git subversion
+		cok "Get latest postfix (temporary solution)"
+		echo
+		rpm -ihv http://repos.oostergo.net/6/postfix-2.11/postfix-2.11.1-1.el6.x86_64.rpm
+		echo
+          rpm  --quiet -q postfix dovecot dovecot-pigeonhole opendkim git subversion
              if [ $? = 0 ]
                 then
 		echo
@@ -449,7 +453,7 @@ myhostname = $VMB_MYHOSTNAME
 mydomain = $VMB_DOMAIN
 mydestination = localhost
 mynetworks = 127.0.0.0/8
-myorigin = \$myhostname
+myorigin = \$mydomain
 
 mailbox_size_limit = 0
 
