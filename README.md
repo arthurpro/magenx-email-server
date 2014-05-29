@@ -1,4 +1,4 @@
-MagenX emain server
+MagenX email server
 ===================
 
 will work only for ViMbAdmin > 3<br/>
