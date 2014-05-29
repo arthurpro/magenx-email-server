@@ -1,10 +1,10 @@
-ADOVMS-M
-========
+MagenX emain server
+===================
 
 will work only for ViMbAdmin > 3<br/>
 https://github.com/opensolutions/ViMbAdmin
 
-## How to setup mail server with Centos, Postfix, Dovecot, OpenDKIM and ViMbAdmin<br/>
+## How to setup mail server with Centos, Postfix, Dovecot, OpenDKIM and Roundcube 1.x + ViMbAdmin<br/>
 
 connection: SSL/TLS<br/>
 SMTP SSL Port 465<br/>
@@ -22,6 +22,7 @@ you can easily control unlimited virtual domains, mailboxes and aliases.<br/>
 create super admin and domain admin.
 <br/><br/><br/>
 **This script will be using:**<br/>
+*- [Roundcube](http://roundcube.net/) latest*<br/>
 *- [ViMbAdmin](https://github.com/opensolutions/ViMbAdmin) latest*<br/>
 *- [Postfix](http://www.postfix.org/) latest*<br/>
 *- [Dovecot](http://dovecot.org/) latest*<br/>
