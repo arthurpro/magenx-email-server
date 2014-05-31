@@ -419,7 +419,7 @@ read rcb_pass_gen
 if [ "$rcb_pass_gen" == "y" ];then
 echo
         RCB_PASSGEN=$(head -c 500 /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 15 | head -n 1)
-                cecho "ROUNDCUBE database password: \033[01;31m $VMB_PASSGEN"
+                cecho "ROUNDCUBE database password: \033[01;31m $RCB_PASSGEN"
                 cok "!REMEMBER IT AND KEEP IT SAFE!"
         fi
 	echo
@@ -431,12 +431,14 @@ read -p "---> Enter ROUNDCUBE database user : " RCB_DB_USER_NAME
 echo
 mysql -u root -p$MYSQL_ROOT_PASS <<EOMYSQL
 CREATE USER '$RCB_DB_USER_NAME'@'$RCB_DB_HOST' IDENTIFIED BY '$RCB_PASSGEN';
-CREATE DATABASE $RCB_DB_NAME;
+CREATE DATABASE $RCB_DB_NAME /*!40101 CHARACTER SET utf8 COLLATE utf8_general_ci */;
 GRANT ALL PRIVILEGES ON $RCB_DB_NAME.* TO '$RCB_DB_USER_NAME'@'$RCB_DB_HOST' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 exit
 EOMYSQL
 echo
+cecho "Import Roundcube database tables..."
+mysql -u root -p$MYSQL_ROOT_PASS $RCB_DB_NAME < $RCB_PATH/SQL/mysql.initial.sql
   else
         cinfo "ROUNDCUBE installation skipped. Next step"
 fi
@@ -755,7 +757,7 @@ echo
 cecho "Writing Dovecot mysql connection file"
 cat > /etc/dovecot/dovecot-sql.conf <<END
 driver = mysql
-connect = host=127.0.0.1 dbname=$VMB_DB_NAME user=$VMB_DB_USER_NAME password=$VMB_PASSGEN
+connect = host=$VMB_DB_HOST dbname=$VMB_DB_NAME user=$VMB_DB_USER_NAME password=$VMB_PASSGEN
 default_pass_scheme = SSHA512
 
 password_query = SELECT username as user, password as password, \
