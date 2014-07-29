@@ -7,6 +7,7 @@ connection: SSL/TLS<br/>
 SMTP SSL Port 465<br/>
 IMAP SSL Port 993<br/>
 OpenDKIM signature<br/>
+SMTP Virus Filter<br/>
 
 *server key file and ssl certificate must be installed*<br/>
 *php > 5.4 must be installed*<br/>
