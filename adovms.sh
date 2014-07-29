@@ -140,15 +140,15 @@ sleep 1
         YELLOWTXT "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
             echo
             echo
-			echo -n "---> Do you agree to these terms?  [y/n][y]:"
-			read terms_agree
+	echo -n "---> Do you agree to these terms?  [y/n][y]:"
+ 	read terms_agree
         if [ "$terms_agree" == "y" ];then
           echo
             mkdir -p ~/adovms
             echo "yes" > ~/adovms/.terms
             else
             echo "Exiting"
-		    exit 1
+           exit 1
           echo
         fi
 fi
