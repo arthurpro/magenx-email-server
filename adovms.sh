@@ -100,7 +100,6 @@ host2=208.80.154.225
 RESULT=$(((ping -w3 -c2 ${host1} || ping -w3 -c2 ${host2}) > /dev/null 2>&1) && echo "up" || (echo "down" && exit 1))
 if [[ ${RESULT} == up ]]; then
   GREENTXT "PASS: NETWORK IS UP. GREAT, LETS START!"
-  echo
   else
   REDTXT "ERROR: NETWORK IS DOWN?"
   YELLOWTXT "------> PLEASE CHECK YOUR NETWORK SETTINGS."
