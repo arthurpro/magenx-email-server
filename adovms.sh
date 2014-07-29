@@ -1157,7 +1157,8 @@ pause '------> Press [Enter] key to show menu'
 printf "\033c"
 ;;
 "exit")
-REDTXT "------> Hasta la vista, baby..."
+REDTXT "------> bye"
+echo -e "\a\a\a"
 exit
 ;;
 ###################################################################################
