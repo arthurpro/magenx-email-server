@@ -1,10 +1,7 @@
-MagenX email server
+MagenX e-mail Server
 ===================
 
-will work only for ViMbAdmin > 3<br/>
-https://github.com/opensolutions/ViMbAdmin
-
-## How to setup mail server with Centos, Postfix, Dovecot, OpenDKIM and Roundcube 1.x + ViMbAdmin<br/>
+## How to setup mail server with Centos, Postfix, Dovecot, OpenDKIM, ClamAV, ClamSMTP and Roundcube 1.x + ViMbAdmin management interface<br/>
 
 connection: SSL/TLS<br/>
 SMTP SSL Port 465<br/>
@@ -28,6 +25,8 @@ create super admin and domain admin.
 *- [Dovecot](http://dovecot.org/) latest*<br/>
 *- [Dovecot-Mysql](http://wiki2.dovecot.org/AuthDatabase/SQL) latest*<br/>
 *- [OpenDKIM](http://www.opendkim.org/) latest* <br/>
+*- [Clam AntiVirus](http://www.clamav.net/lang/en/) latest* <br/>
+*- [Clam SMTP](http://thewalter.net/stef/software/clamsmtp/) latest*<br/>
 <br/><br/>
 **Prerequisites:**<br/>
 meet the follow prerequisites:<br/>
