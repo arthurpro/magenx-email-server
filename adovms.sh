@@ -184,7 +184,7 @@ do
 echo
 echo
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-BLUEBG "NOW BEGIN REPOSITORIES INSTALLATION"
+BLUEBG " NOW BEGIN REPOSITORIES INSTALLATION "
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 echo
 WHITETXT "============================================================================="
@@ -247,7 +247,7 @@ if [ "$repoF_install" == "y" ];then
 fi
 echo 
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-BLUEBG "REPOSITORIES INSTALLATION FINISHED"
+BLUEBG " REPOSITORIES INSTALLATION FINISHED "
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 echo
 echo
@@ -258,7 +258,7 @@ printf "\033c"
 "packages")
 echo
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-BLUEBG "NOW INSTALLING POSTFIX AND DOVECOT"
+BLUEBG " NOW INSTALLING POSTFIX, DOVECOT, CLAMAV, OPENDKIM "
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 echo
 echo
@@ -382,7 +382,7 @@ END
 fi
 echo
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-BLUEBG "FINISHED PACKAGES INSTALLATION"
+BLUEBG " FINISHED PACKAGES INSTALLATION "
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 echo
 echo
@@ -392,7 +392,7 @@ printf "\033c"
 "vimbadmin")
 echo
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-BLUEBG "NOW DOWNLOADING ViMbAdmin"
+BLUEBG " NOW DOWNLOADING ViMbAdmin "
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 echo
 echo -n "---> Download and configure ViMbAdmin 3? [y/n][n]:"
@@ -430,7 +430,7 @@ END
 	fi
 echo
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-BLUEBG "FINISHED ViMbAdmin INSTALLATION"
+BLUEBG " FINISHED ViMbAdmin INSTALLATION "
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 echo
 echo
@@ -440,7 +440,7 @@ printf "\033c"
 "roundcube")
 echo
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-BLUEBG "NOW DOWNLOADING ROUNDCUBE"
+BLUEBG " NOW DOWNLOADING ROUNDCUBE "
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 echo
 echo -n "---> Download and configure ROUNDCUBE 1.x? [y/n][n]:"
@@ -464,7 +464,7 @@ if [ "$rcb_down" == "y" ];then
 	echo	
 	echo	
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-BLUEBG "FINISHED ROUNDCUBE INSTALLATION"
+BLUEBG " FINISHED ROUNDCUBE INSTALLATION "
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
   else
         YELLOWTXT "ROUNDCUBE installation skipped. Next step"
@@ -477,7 +477,7 @@ printf "\033c"
 "config")
 echo
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-BLUEBG "NOW CONFIGURING POSTFIX, DOVECOT, OPENDKIM, ViMbAdmin AND ROUNDCUBE"
+BLUEBG " NOW CONFIGURING POSTFIX, DOVECOT, OPENDKIM, ViMbAdmin AND ROUNDCUBE "
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 echo
 printf "\033c"
