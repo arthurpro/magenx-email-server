@@ -160,18 +160,18 @@ fi
 showMenu () {
 printf "\033c"
      echo
-		echo
+	echo
         echo -e "${DGREYBG}${BOLD}  Virtual Mail Server Configuration v.$ADOVMS_VER  ${RESET}"
         echo -e "\t\t${BLUE}${BOLD}:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  ${RESET}"
         echo
         echo -e "\t\t${WHITE}${BOLD}-> For repositories installation enter :  ${YELLOW} repo  ${RESET}"
         echo -e "\t\t${WHITE}${BOLD}-> For packages installation enter     :  ${YELLOW} packages  ${RESET}"
         echo -e "\t\t${WHITE}${BOLD}-> Download and install vimbadmin      :  ${YELLOW} vimbadmin  ${RESET}"
-		echo -e "\t\t${WHITE}${BOLD}-> Download and install roundcube      :  ${YELLOW} roundcube  ${RESET}"
+	echo -e "\t\t${WHITE}${BOLD}-> Download and install roundcube      :  ${YELLOW} roundcube  ${RESET}"
         echo -e "\t\t${WHITE}${BOLD}-> Setup and configure everything      :  ${YELLOW} config  ${RESET}"
         echo
         echo -e "\t\t${BLUE}${BOLD}:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  ${RESET}"
-		echo
+	echo
         echo -e "\t\t${WHITE}${BOLD}-> To quit enter                       :  ${RED}    exit  ${RESET}"
         echo
         echo
@@ -275,11 +275,11 @@ if [ "$mail_install" == "y" ];then
 		echo
 		yum --enablerepo=epel-testing -y install opendkim
 		echo
-		GREENTXT "Running ClamAV antivirus scanner installation"
+	GREENTXT "Running ClamAV antivirus scanner installation"
 		echo
 		yum --disablerepo=rpmforge -y install clamsmtp clamd clamav
 		echo
-		GREENTXT "Get the latest postfix (temporary solution)"
+	GREENTXT "Get the latest postfix (temporary solution)"
 		echo
 		rpm -ihv http://repos.oostergo.net/6/postfix-2.11/postfix-2.11.1-1.el6.x86_64.rpm
 		echo
