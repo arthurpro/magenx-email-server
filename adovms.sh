@@ -111,7 +111,7 @@ fi
 # we need php > 5.4.x
 PHPVER=$(php -r \@phpinfo\(\)\; | grep 'PHP Version' -m 1 | awk {'print $4'} | cut -d'.' -f 2)
 if [ ${PHPVER} = 4 ] || [ ${PHPVER} > 4 ]; then
-  GREENTXT "PASS: YOUR PHP IS $(php -r \@phpinfo\(\)\; | grep 'PHP Version' -m 1 | awk {'print $4'})"
+  GREENTXT "PASS: YOUR PHP IS ${WHITE}${BOLD}$(php -r \@phpinfo\(\)\; | grep 'PHP Version' -m 1 | awk {'print $4'})"
   else
   echo
   REDTXT "ERROR: YOUR PHP VERSION IS NOT > 5.4"
@@ -158,20 +158,20 @@ fi
 
 showMenu () {
 printf "\033c"
-     echo
-	echo
+        echo
+        echo
         echo -e "${DGREYBG}${BOLD}  Virtual Mail Server Configuration v.$ADOVMS_VER  ${RESET}"
         echo -e "\t\t${BLUE}${BOLD}:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  ${RESET}"
         echo
         echo -e "\t\t${WHITE}${BOLD}-> For repositories installation enter :  ${YELLOW} repo  ${RESET}"
         echo -e "\t\t${WHITE}${BOLD}-> For packages installation enter     :  ${YELLOW} packages  ${RESET}"
         echo -e "\t\t${WHITE}${BOLD}-> Download and install vimbadmin      :  ${YELLOW} vimbadmin  ${RESET}"
-	echo -e "\t\t${WHITE}${BOLD}-> Download and install roundcube      :  ${YELLOW} roundcube  ${RESET}"
+        echo -e "\t\t${WHITE}${BOLD}-> Download and install roundcube      :  ${YELLOW} roundcube  ${RESET}"
         echo -e "\t\t${WHITE}${BOLD}-> Setup and configure everything      :  ${YELLOW} config  ${RESET}"
         echo
         echo -e "\t\t${BLUE}${BOLD}:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  ${RESET}"
-	echo
-        echo -e "\t\t${WHITE}${BOLD}-> To quit enter                       :  ${RED}    exit  ${RESET}"
+        echo
+        echo -e "\t\t${WHITE}${BOLD}-> To quit enter                       :  ${RED} exit  ${RESET}"
         echo
         echo
 }
@@ -266,19 +266,19 @@ echo -n "---> Start mail packages installation? [y/n][n]:"
 read mail_install
 if [ "$mail_install" == "y" ];then
 		echo
-        GREENTXT "Running mail packages installation"
+    GREENTXT "Running mail packages installation"
 		echo
 		yum -y install dovecot dovecot-pigeonhole git subversion
 		echo
-        GREENTXT "Running opendkim installation"
+    GREENTXT "Running opendkim installation"
 		echo
 		yum --enablerepo=epel-testing -y install opendkim
 		echo
-	GREENTXT "Running ClamAV antivirus scanner installation"
+    GREENTXT "Running ClamAV antivirus scanner installation"
 		echo
 		yum --disablerepo=rpmforge -y install clamsmtp clamd clamav
 		echo
-	GREENTXT "Get the latest postfix (temporary solution)"
+    GREENTXT "Get the latest postfix (temporary solution)"
 		echo
 		rpm -ihv http://repos.oostergo.net/6/postfix-2.11/postfix-2.11.1-1.el6.x86_64.rpm
 		echo
