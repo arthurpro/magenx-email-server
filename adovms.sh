@@ -280,6 +280,7 @@ if [ "$mail_install" == "y" ];then
 		echo
     GREENTXT "Get the latest postfix (temporary solution)"
 		echo
+                rpm -e --nodeps postfix
 		rpm -ihv http://repos.oostergo.net/6/postfix-2.11/postfix-2.11.1-1.el6.x86_64.rpm
 		echo
         rpm  --quiet -q postfix dovecot dovecot-pigeonhole opendkim git subversion
@@ -295,10 +296,8 @@ if [ "$mail_install" == "y" ];then
 		chkconfig postfix on
 		chkconfig dovecot on
 		chkconfig opendkim on
-		chkconfig exim off
-		chkconfig sendmail off
-		chkconfig clamsmtp on
-		chkconfig clamd on
+		chkconfig clamsmtpd on
+		chkconfig clamav on
 		alternatives --set mta /usr/sbin/sendmail.postfix
 	
 cat > /etc/init.d/clamsmtpd <<END
