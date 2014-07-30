@@ -411,7 +411,6 @@ if [ "$vmb_down" == "y" ];then
 		###################################################
         git clone git://github.com/opensolutions/ViMbAdmin.git .
 		echo
-		wget -O composer.json https://raw.githubusercontent.com/magenx/ADOVMS-M/master/composer.json
 		echo
 		echo "  Installing Third Party Libraries"
 		echo
