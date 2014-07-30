@@ -268,11 +268,11 @@ if [ "$mail_install" == "y" ];then
 		echo
     GREENTXT "Running mail packages installation"
 		echo
-		yum -y install dovecot dovecot-pigeonhole git subversion
+                yum --enablerepo=atrpms-testing -y install dovecot dovecot-pigeonhole 
 		echo
     GREENTXT "Running opendkim installation"
 		echo
-		yum --enablerepo=epel-testing -y install opendkim
+		yum --enablerepo=epel-testing -y install opendkim git subversion
 		echo
     GREENTXT "Running ClamAV antivirus scanner installation"
 		echo
