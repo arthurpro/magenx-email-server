@@ -276,7 +276,7 @@ if [ "$mail_install" == "y" ];then
 		echo
     GREENTXT "Running ClamAV antivirus scanner installation"
 		echo
-		yum --disablerepo=rpmforge -y install clamsmtp clamd clamav
+		yum --disablerepo=rpmforge,atrpms -y install clamsmtp clamd clamav
 		echo
     GREENTXT "Get the latest postfix (temporary solution)"
 		echo
