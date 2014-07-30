@@ -1017,7 +1017,7 @@ MYDOMAINS=$VMB_DOMAIN
 NOTIFY=$VMB_ADMIN_MAIL
 
 
-MYDOM_RE=.+@`echo "\$MYDOMAINS" |  sed 's/,/$|.+@/g`$
+MYDOM_RE=.+@`echo "\$MYDOMAINS" |  sed 's/,/$|.+@/g'`$
 
 echo \$MYDOM_RE
 if [ X`echo \$SENDER | egrep \$MYDOM_RE` != "X" ];
