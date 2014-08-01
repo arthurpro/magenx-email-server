@@ -268,7 +268,7 @@ if [ "$mail_install" == "y" ];then
 		echo
     GREENTXT "Running mail packages installation"
 		echo
-                yum --enablerepo=atrpms-testing -y install dovecot dovecot-pigeonhole 
+        yum --enablerepo=atrpms-testing -y install dovecot dovecot-pigeonhole 
 		echo
     GREENTXT "Running opendkim installation"
 		echo
@@ -283,7 +283,7 @@ if [ "$mail_install" == "y" ];then
                 rpm -e --nodeps postfix
 		rpm -ihv http://repos.oostergo.net/6/postfix-2.11/postfix-2.11.1-1.el6.x86_64.rpm
 		echo
-        rpm  --quiet -q postfix dovecot dovecot-pigeonhole opendkim git subversion
+                rpm  --quiet -q postfix dovecot dovecot-pigeonhole opendkim git subversion
     if [ $? = 0 ]
       then
         echo
@@ -300,6 +300,7 @@ if [ "$mail_install" == "y" ];then
 		chkconfig clamav on
 		alternatives --set mta /usr/sbin/sendmail.postfix
 	
+
 cat > /etc/init.d/clamsmtpd <<END
 #!/bin/sh
 # clamsmtpd     Script to start/stop clamsmtpd.
@@ -411,6 +412,7 @@ if [ "$vmb_down" == "y" ];then
 		###################################################
         git clone git://github.com/opensolutions/ViMbAdmin.git .
 		echo
+		wget -O composer.json https://raw.githubusercontent.com/magenx/ADOVMS-M/master/composer.json
 		echo
 		echo "  Installing Third Party Libraries"
 		echo
@@ -994,7 +996,7 @@ User: clam
 VirusAction: /etc/postfix/valert.sh
 END
 echo
-WHITETXT "Writing ClamSMTP filter config"
+WHITETXT "Writing ClamSMTP email alert script"
 cat > /etc/postfix/valert.sh <<END
 #!/bin/sh
 #
@@ -1053,15 +1055,29 @@ WHITETXT "======================================================================
 echo
 WHITETXT "Now we going to configure opendkim - generating signing key and configs"
 echo
-pause '------> Press [Enter] key to proceed'
 echo
-mkdir -p /etc/opendkim/keys/${VMB_DOMAIN}
-opendkim-genkey -D /etc/opendkim/keys/${VMB_DOMAIN}/ -d ${VMB_DOMAIN} -s default
-chown -R opendkim:opendkim /etc/opendkim/keys/${VMB_DOMAIN}
-cd /etc/opendkim/keys/${VMB_DOMAIN}
+read -p "---> Enter your domains: domain1.com domain2.net domain3.eu: " DKIM_DOMAINS
+echo
+echo
+for DOMAIN in ${DKIM_DOMAINS}
+do
+# Generate folders and keys
+mkdir -p /etc/opendkim/keys/${DOMAIN}
+opendkim-genkey -D /etc/opendkim/keys/${DOMAIN}/ -d ${DOMAIN} -s default
+chown -R opendkim:opendkim /etc/opendkim/keys/${DOMAIN}
+cd /etc/opendkim/keys/${DOMAIN}
 cp default.private default
+# Add key rule to Table
+echo "default._domainkey.${DOMAIN} ${DOMAIN}:default:/etc/opendkim/keys/${DOMAIN}/default.private" >> /etc/opendkim/KeyTable
+echo "*@${DOMAIN} default._domainkey.${DOMAIN}" >> /etc/opendkim/SigningTable
+echo
+GREENTXT " DNS records for ${YELLOW}${BOLD}${DOMAIN} "
+cat /etc/opendkim/keys/${DOMAIN}/default.txt
+echo "_adsp._domainkey.${DOMAIN} IN TXT dkim=unknown"
+WHITETXT "============================================================================="
+done
+echo
 WHITETXT "Loading main opendkim config"
-
 cat > /etc/opendkim.conf <<END
 ## BEFORE running OpenDKIM you must:
 ## - edit your DNS records to publish your public keys
@@ -1081,41 +1097,13 @@ Umask   002
 Canonicalization        relaxed/simple
 Selector        default
 MinimumKeyBits 1024
-KeyFile /etc/opendkim/keys/${VMB_DOMAIN}/default.private
+
 KeyTable        /etc/opendkim/KeyTable
 SigningTable    refile:/etc/opendkim/SigningTable
 END
 echo
-WHITETXT "Loading opendkim KeyTable"
-
-cat > /etc/opendkim/KeyTable <<END
-# To use this file, uncomment the #KeyTable option in /etc/opendkim.conf,
-# then uncomment the following line and replace example.com with your domain
-# name, then restart OpenDKIM. Additional keys may be added on separate lines.
-
-default._domainkey.${VMB_DOMAIN} ${VMB_DOMAIN}:default:/etc/opendkim/keys/${VMB_DOMAIN}/default.private
-END
-echo
-WHITETXT "Loading opendkim SigningTable"
-
-cat > /etc/opendkim/SigningTable <<END
-# The following wildcard will work only if
-# refile:/etc/opendkim/SigningTable is included
-# in /etc/opendkim.conf.
-
-*@${VMB_DOMAIN} default._domainkey.${VMB_DOMAIN}
-END
 echo
 WHITETXT "============================================================================="
-WHITETXT "============================================================================="
-WHITETXT "Update the DNS records"
-WHITETXT "This is the final part. You need to add a TXT entry default._domainkey"
-echo
-DKIM_RECORD=$(cat /etc/opendkim/keys/${VMB_DOMAIN}/default.txt)
-GREENTXT "$DKIM_RECORD"
-echo
-WHITETXT "You should also add another TXT Record to your zone file"
-GREENTXT "_adsp._domainkey.${VMB_DOMAIN} IN TXT dkim=unknown"
 echo
 pause '------> Press [Enter] key to continue'
 echo
