@@ -268,7 +268,7 @@ if [ "$mail_install" == "y" ];then
 		echo
     GREENTXT "Running mail packages installation"
 		echo
-        yum --enablerepo=atrpms-testing -y install dovecot dovecot-pigeonhole 
+                yum --enablerepo=atrpms-testing -y install dovecot dovecot-pigeonhole 
 		echo
     GREENTXT "Running opendkim installation"
 		echo
@@ -410,18 +410,16 @@ if [ "$vmb_down" == "y" ];then
 		###################################################
 		git config --global url."https://".insteadOf git://
 		###################################################
-        git clone git://github.com/opensolutions/ViMbAdmin.git .
-		echo
-		wget -O composer.json https://raw.githubusercontent.com/magenx/ADOVMS-M/master/composer.json
+                git clone git://github.com/opensolutions/ViMbAdmin.git .
 		echo
 		echo "  Installing Third Party Libraries"
 		echo
-        cd ${VMB_PATH}
+                cd ${VMB_PATH}
 		echo "  Get composer"
 		curl -sS https://getcomposer.org/installer | php
 		mv composer.phar composer
 		echo
-        ./composer install
+                ./composer install
 		cp ${VMB_PATH}/public/.htaccess.dist ${VMB_PATH}/public/.htaccess
 echo
 cat > /root/adovms/.adovms_index <<END
@@ -454,7 +452,7 @@ if [ "$rcb_down" == "y" ];then
 		pause '------> Press [Enter] key to continue'
 		echo
 		mkdir -p ${RCB_PATH}
-        cd ${RCB_PATH}
+                cd ${RCB_PATH}
 		echo
 		wget -qO - http://downloads.sourceforge.net/project/roundcubemail/roundcubemail/1.0.2/roundcubemail-1.0.2.tar.gz | tar -xz --strip 1
 		echo
