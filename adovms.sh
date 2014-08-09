@@ -345,7 +345,7 @@ stop() {
         killproc clamsmtpd
         RETVAL=\$?
         echo
-        [ \$RETVAL -eq 0 ] && rm -f /var/run/\$PID_DIR/clamsmtpd.pid /var/lock/subsys/clamsmtpd
+        [ \$RETVAL -eq 0 ] && rm -f \$PID_DIR/clamsmtpd.pid /var/lock/subsys/clamsmtpd
         return \$RETVAL
 }
 
